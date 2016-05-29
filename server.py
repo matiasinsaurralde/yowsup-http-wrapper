@@ -18,7 +18,7 @@ class MessagesHandler(YowsupHandler):
 
     """Returns a JSON object with the incoming messages
 
-    This handler should purge the dictionary contents after sending them, the client is expected to poll regularly.
+    The client is expected to poll regularly.
     """
     def get(self):
         output = json_encode(self.messages)
@@ -36,6 +36,15 @@ class MessagesHandler(YowsupHandler):
 
         self.set_header( 'Content-Type', 'application/json' )
         self.write( "true" )
+
+    """Removes a message (if exists)
+    """
+    def delete(self):
+        message_id = self.get_argument("id")
+        if message_id in self.messages:
+            del self.messages[message_id]
+
+        self.write("true")
 
 def make_app(stack, messages):
     return tornado.web.Application([
