@@ -1,19 +1,29 @@
 import tornado.ioloop
 import tornado.web
+from tornado.escape import json_encode
 
 from yowsup.layers import YowLayerEvent
 
-class MainHandler(tornado.web.RequestHandler):
-    def initialize(self, stack):
+class YowsupHandler(tornado.web.RequestHandler):
+    def initialize(self, stack, messages):
         self.stack = stack
+        self.messages = messages
 
+class MainHandler(YowsupHandler):
     def get(self):
         self.stack.broadcastEvent(YowLayerEvent("sendMessage", dest='595981288424', msg='hello'))
         self.write("Hello, world")
 
-def make_app(stack):
+class FetchMessagesHandler(YowsupHandler):
+    def get(self):
+        output = json_encode(self.messages)
+        self.set_header( 'Content-Type', 'application/json' )
+        self.write( output )
+
+def make_app(stack, messages):
     return tornado.web.Application([
-        (r"/", MainHandler, dict(stack=stack)),
+        (r"/messages", FetchMessagesHandler, dict(stack=stack, messages=messages)),
+        (r"/", MainHandler, dict(stack=stack, messages=messages)),
     ])
 
 # if __name__ == "__main__":
