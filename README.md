@@ -11,7 +11,7 @@ I've been using [Postman](https://www.getpostman.com/) during my tests, you may 
 ## Ideas
 
 * Implement [websockets](http://www.tornadoweb.org/en/stable/websocket.html#tornado-websocket-bidirectional-communication-to-the-browser)?
-
+* Fix the [tests](https://github.com/matiasinsaurralde/yowsup-http-wrapper/blob/master/test_server.py), make them play well with Yowsup, handle two clients at the same time!
 ## License
 
 [MIT](https://github.com/matiasinsaurralde/yowsup-http-wrapper/blob/master/LICENSE)
