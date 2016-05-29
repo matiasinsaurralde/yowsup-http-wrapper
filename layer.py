@@ -5,13 +5,12 @@ class EchoLayer(YowInterfaceLayer):
 
     @ProtocolEntityCallback("message")
     def onMessage(self, messageProtocolEntity):
-
         if messageProtocolEntity.getType() == 'text':
             self.onTextMessage(messageProtocolEntity)
         elif messageProtocolEntity.getType() == 'media':
-            self.onMediaMessage(messageProtocolEntity)
+            return
 
-        self.toLower(messageProtocolEntity.forward(messageProtocolEntity.getFrom()))
+        # self.toLower(messageProtocolEntity.forward(messageProtocolEntity.getFrom()))
         self.toLower(messageProtocolEntity.ack())
         self.toLower(messageProtocolEntity.ack(True))
 
@@ -21,11 +20,13 @@ class EchoLayer(YowInterfaceLayer):
         self.toLower(entity.ack())
 
     def onTextMessage(self,messageProtocolEntity):
-        # just print info
-        print("Echoing %s to %s" % (messageProtocolEntity.getBody(), messageProtocolEntity.getFrom(False)))
+        origin = messageProtocolEntity.getFrom(False)
+        body = messageProtocolEntity.getBody()
+        id = messageProtocolEntity.getId()
+        print("** Message", origin, body, id)
+        self.getProp("messages")[id] = { 'origin': origin, 'body': body }
 
     def onMediaMessage(self, messageProtocolEntity):
-        # just print info
         if messageProtocolEntity.getMediaType() == "image":
             print("Echoing image %s to %s" % (messageProtocolEntity.url, messageProtocolEntity.getFrom(False)))
 
@@ -39,9 +40,6 @@ class EchoLayer(YowInterfaceLayer):
         print("sendMessage", dest,msg)
         messageEntity = TextMessageProtocolEntity(msg, to = "%s@s.whatsapp.net" % dest)
         self.toLower(messageEntity)
-
-    def getMessages(self):
-        print("getMessages")
 
     def onEvent(self, e):
         if e.name == 'sendMessage':
