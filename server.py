@@ -1,32 +1,44 @@
 import tornado.ioloop
 import tornado.web
-from tornado.escape import json_encode
+from tornado.escape import json_encode, json_decode
 
 from yowsup.layers import YowLayerEvent
 
 class YowsupHandler(tornado.web.RequestHandler):
+    """Handler that references the Yowsup stack & the messages dictionary"""
     def initialize(self, stack, messages):
         self.stack = stack
         self.messages = messages
 
 class MainHandler(YowsupHandler):
     def get(self):
-        self.stack.broadcastEvent(YowLayerEvent("sendMessage", dest='595981288424', msg='hello'))
         self.write("Hello, world")
 
-class FetchMessagesHandler(YowsupHandler):
+class MessagesHandler(YowsupHandler):
+
+    """Returns a JSON object with the incoming messages
+
+    This handler should purge the dictionary contents after sending them, the client is expected to poll regularly.
+    """
     def get(self):
         output = json_encode(self.messages)
+
         self.set_header( 'Content-Type', 'application/json' )
         self.write( output )
 
+    """Sends a message to the specified number
+
+    The input is a JSON Object, containing the destination number and the message body.
+    """
+    def post(self):
+        input = json_decode( self.request.body)
+        self.stack.broadcastEvent(YowLayerEvent( "sendMessage", dest=input['dest'], msg=input['msg']))
+
+        self.set_header( 'Content-Type', 'application/json' )
+        self.write( "true" )
+
 def make_app(stack, messages):
     return tornado.web.Application([
-        (r"/messages", FetchMessagesHandler, dict(stack=stack, messages=messages)),
+        (r"/messages", MessagesHandler, dict(stack=stack, messages=messages)),
         (r"/", MainHandler, dict(stack=stack, messages=messages)),
     ])
-
-# if __name__ == "__main__":
-#     app = make_app()
-#     app.listen(8888)
-#    tornado.ioloop.IOLoop.current().start()
