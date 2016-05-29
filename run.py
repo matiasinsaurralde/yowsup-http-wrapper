@@ -21,13 +21,17 @@ credentials = ( environ.get("PHONE"), environ.get("PASSWORD" ) )
 
 if __name__==  "__main__":
 
+    messages = dict()
+
     stackBuilder = YowStackBuilder()
     stack = stackBuilder\
         .pushDefaultLayers(True)\
         .push(EchoLayer)\
         .build()
 
-    app = make_app(stack)
+    stack.setProp("messages", messages)
+
+    app = make_app(stack, messages)
 
     def YowThread():
         stack.setCredentials(credentials)
