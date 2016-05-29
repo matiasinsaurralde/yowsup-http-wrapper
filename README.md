@@ -8,6 +8,10 @@ I've been using [Postman](https://www.getpostman.com/) during my tests, you may 
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/84f6a0f6176ee409698b)
 
+## Ideas
+
+* Implement [websockets](http://www.tornadoweb.org/en/stable/websocket.html#tornado-websocket-bidirectional-communication-to-the-browser)?
+
 ## License
 
 [MIT](https://github.com/matiasinsaurralde/yowsup-http-wrapper/blob/master/LICENSE)
