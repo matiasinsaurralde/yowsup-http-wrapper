@@ -1,4 +1,5 @@
 from yowsup.layers.interface                           import YowInterfaceLayer, ProtocolEntityCallback
+from yowsup.layers.protocol_messages.protocolentities  import TextMessageProtocolEntity
 
 class EchoLayer(YowInterfaceLayer):
 
@@ -33,3 +34,15 @@ class EchoLayer(YowInterfaceLayer):
 
         elif messageProtocolEntity.getMediaType() == "vcard":
             print("Echoing vcard (%s, %s) to %s" % (messageProtocolEntity.getName(), messageProtocolEntity.getCardData(), messageProtocolEntity.getFrom(False)))
+
+    def sendMessage(self, dest, msg):
+        print("sendMessage", dest,msg)
+        messageEntity = TextMessageProtocolEntity(msg, to = "%s@s.whatsapp.net" % dest)
+        self.toLower(messageEntity)
+
+    def getMessages(self):
+        print("getMessages")
+
+    def onEvent(self, e):
+        if e.name == 'sendMessage':
+            self.sendMessage( e.args['dest'], e.args['msg'] )
