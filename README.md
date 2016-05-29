@@ -1,1 +1,1 @@
-# yowsup-transport
+# yowsup-json-rpc
