@@ -12,12 +12,17 @@ from os import environ
 from server import make_app
 
 import threading, time
+from sys import argv
 import tornado.ioloop, tornado.web
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
-credentials = ( environ.get("PHONE"), environ.get("PASSWORD" ) )
+if len(argv) > 1:
+    print(argv[1], argv[2])
+    credentials = ( argv[1], argv[2])
+else:
+    credentials = ( environ.get("PHONE"), environ.get("PASSWORD" ) )
 
 if __name__==  "__main__":
 
