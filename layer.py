@@ -23,7 +23,7 @@ class EchoLayer(YowInterfaceLayer):
         origin = messageProtocolEntity.getFrom(False)
         body = messageProtocolEntity.getBody()
         id = messageProtocolEntity.getId()
-        print("** Message", origin, body, id)
+        # print("** Message", origin, body, id)
         self.getProp("messages")[id] = { 'origin': origin, 'body': body }
 
     def onMediaMessage(self, messageProtocolEntity):
