@@ -20,7 +20,10 @@ load_dotenv(dotenv_path)
 
 if len(argv) > 1:
     credentials = ( argv[1], argv[2])
-    port = ( argv[3] )
+    if len(argv) >= 4:
+        port = argv[3]
+    else:
+        port = 8888
 else:
     credentials = ( environ.get("PHONE"), environ.get("PASSWORD" ) )
     port = environ.get("PORT")
