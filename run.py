@@ -19,10 +19,11 @@ dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
 if len(argv) > 1:
-    print(argv[1], argv[2])
     credentials = ( argv[1], argv[2])
+    port = ( argv[3] )
 else:
     credentials = ( environ.get("PHONE"), environ.get("PASSWORD" ) )
+    port = environ.get("PORT")
 
 if __name__==  "__main__":
 
@@ -44,7 +45,7 @@ if __name__==  "__main__":
         stack.loop() #this is the program mainloop
 
     def TornadoThread():
-        app.listen(8888)
+        app.listen(port)
         tornado.ioloop.IOLoop.current().start()
 
     WaThread = threading.Thread( target=YowThread )
