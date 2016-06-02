@@ -24,6 +24,7 @@ It's important to note that this wrapper doesn't cover the Whatsapp registration
 
 ## Ideas
 
+* Implement Whatsapp "presence", e.g. when Tornado is up, set presence as available.
 * Implement [websockets](http://www.tornadoweb.org/en/stable/websocket.html#tornado-websocket-bidirectional-communication-to-the-browser)?
 * Fix the [tests](https://github.com/matiasinsaurralde/yowsup-http-wrapper/blob/master/test_server.py), make them play well with Yowsup, handle two clients at the same time!
 
